@@ -18,9 +18,15 @@ var wrong = []; // Holds all of the wrong guesses
 
 //Counters
 var numGuesses = 9;
+var winCounter = 0;
 
 
 
+function startGame() {
+
+    numGuesses = 9;
+    blanks = [];
+    wrong = [];
 
 
     chosenWord = wordsList[Math.floor(Math.random() * wordsList.length)]; // solution is chosen randomly from wordList
@@ -29,7 +35,7 @@ var numGuesses = 9;
 
     lettersInChosenWord = chosenWord.split(""); // the word is broken into individual letters
 
-    blanks = [];
+
 
     for (var i = 0; i < lettersInChosenWord.length; i++) {
         blanks.push('_');
@@ -40,7 +46,7 @@ var numGuesses = 9;
     document.getElementById('guessesLeft').innerHTML = numGuesses;
 
     document.getElementById('wrongGuesses').innerHTML = wrong;
-
+}
 
 
 
@@ -55,6 +61,9 @@ function checkLetters(letter) {
         }
     }
 
+    console.log(letterInWord);
+
+
     //if the letter exists in the word, can also be written as if(letterInWord)
     if(letterInWord === true) {
         for (var i=0; i<chosenWord.length; i++) {
@@ -65,8 +74,23 @@ function checkLetters(letter) {
         console.log(blanks);
 
     } else {
-        wrong.push(letter);
-        numGuesses --;
+        console.log(wrong);
+        if (wrong.length ===0) {
+            wrong.push(letter);
+            numGuesses --;
+        }
+
+        for (var i=0; i < wrong.length;  i++) {
+            console.log('letter', letter);
+            console.log('wrong', wrong[i]);
+            if (wrong[i] === letter) {
+                //do nothing if you already guessed that letter
+            } else {
+                wrong.push(letter);
+                numGuesses --;
+            }
+        }
+
     }
 
     nextRound();
@@ -79,5 +103,27 @@ function nextRound() {
     document.getElementById('guessesLeft').innerHTML = numGuesses;
 
     document.getElementById('wrongGuesses').innerHTML = wrong;
+
+
+    if (chosenWord === blanks.join('')) {
+
+        winCounter++;
+        alert("You Win");
+
+        document.getElementById('winCounter').innerHTML = winCounter;
+
+        startGame();
+
+
+    } else if (numGuesses === 0) {
+        lossCounter++;
+        alert('You lose');
+
+        document.getElementById('lossCounter').innerHTML = lossCounter;
+        startGame();
+    }
+
+
 }
 
+startGame();
