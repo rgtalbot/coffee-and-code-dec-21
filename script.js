@@ -20,28 +20,21 @@ var wrong = []; // Holds all of the wrong guesses
 var numGuesses = 9;
 
 
+chosenWord = wordsList[Math.floor(Math.random() * wordsList.length)]; // solution is chosen randomly from wordList
 
+console.log(chosenWord);
 
+lettersInChosenWord = chosenWord.split(""); // the word is broken into individual letters
 
-    chosenWord = wordsList[Math.floor(Math.random() * wordsList.length)]; // solution is chosen randomly from wordList
+for (var i = 0; i < lettersInChosenWord.length; i++) {
+    blanks.push('_');
+}
 
-    console.log(chosenWord);
+document.getElementById('wordblanks').innerHTML = blanks.join(' ');
 
-    lettersInChosenWord = chosenWord.split(""); // the word is broken into individual letters
+document.getElementById('guessesLeft').innerHTML = numGuesses;
 
-    blanks = [];
-
-    for (var i = 0; i < lettersInChosenWord.length; i++) {
-        blanks.push('_');
-    }
-
-    document.getElementById('wordblanks').innerHTML = blanks.join(' ');
-
-    document.getElementById('guessesLeft').innerHTML = numGuesses;
-
-    document.getElementById('wrongGuesses').innerHTML = wrong;
-
-
+document.getElementById('wrongGuesses').innerHTML = wrong;
 
 
 function checkLetters(letter) {
@@ -56,8 +49,8 @@ function checkLetters(letter) {
     }
 
     //if the letter exists in the word, can also be written as if(letterInWord)
-    if(letterInWord === true) {
-        for (var i=0; i<chosenWord.length; i++) {
+    if (letterInWord === true) {
+        for (var i = 0; i < chosenWord.length; i++) {
             if (chosenWord[i] == letter) {
                 blanks[i] = letter;
             }
@@ -66,7 +59,7 @@ function checkLetters(letter) {
 
     } else {
         wrong.push(letter);
-        numGuesses --;
+        numGuesses--;
     }
 
     nextRound();
