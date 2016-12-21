@@ -18,24 +18,20 @@ var wrong = []; // Holds all of the wrong guesses
 
 //Counters
 var numGuesses = 9;
-var winCounter = 0;
-
+var wins = 0;
+var losses = 0;
 
 
 function startGame() {
-
     numGuesses = 9;
     blanks = [];
     wrong = [];
-
 
     chosenWord = wordsList[Math.floor(Math.random() * wordsList.length)]; // solution is chosen randomly from wordList
 
     console.log(chosenWord);
 
     lettersInChosenWord = chosenWord.split(""); // the word is broken into individual letters
-
-
 
     for (var i = 0; i < lettersInChosenWord.length; i++) {
         blanks.push('_');
@@ -46,8 +42,7 @@ function startGame() {
     document.getElementById('guessesLeft').innerHTML = numGuesses;
 
     document.getElementById('wrongGuesses').innerHTML = wrong;
-}
-
+};
 
 
 function checkLetters(letter) {
@@ -56,73 +51,52 @@ function checkLetters(letter) {
 
     // Check if a letter exists inside the array at all.
     for (var i = 0; i < lettersInChosenWord.length; i++) {
-        if (lettersInChosenWord[i] == letter) {
+        if (lettersInChosenWord[i] === letter) {
             letterInWord = true; // if the letter exists then return true. This will be used in a later step.
         }
     }
 
-    console.log(letterInWord);
-
-
     //if the letter exists in the word, can also be written as if(letterInWord)
-    if(letterInWord === true) {
-        for (var i=0; i<chosenWord.length; i++) {
-            if (chosenWord[i] == letter) {
-                blanks[i] = letter;
+    if (letterInWord === true) {
+        for (var i = 0; i < lettersInChosenWord.length; i++) {
+            if (lettersInChosenWord[i] === letter) {
+                blanks[i] = letter
+
             }
         }
         console.log(blanks);
-
-    } else {
-        console.log(wrong);
-        if (wrong.length ===0) {
-            wrong.push(letter);
-            numGuesses --;
-        }
-
-        for (var i=0; i < wrong.length;  i++) {
-            console.log('letter', letter);
-            console.log('wrong', wrong[i]);
-            if (wrong[i] === letter) {
-                //do nothing if you already guessed that letter
-            } else {
-                wrong.push(letter);
-                numGuesses --;
-            }
-        }
-
+    } else if (wrong.indexOf(letter) < 0) {
+        numGuesses--;
+        wrong.push(letter);
     }
 
-    nextRound();
-}
 
+    nextRound();
+
+}
 
 function nextRound() {
     document.getElementById('wordblanks').innerHTML = blanks.join(' ');
 
     document.getElementById('guessesLeft').innerHTML = numGuesses;
 
-    document.getElementById('wrongGuesses').innerHTML = wrong;
+    document.getElementById('wrongGuesses').innerHTML = wrong.join(' ');
 
-
-    if (chosenWord === blanks.join('')) {
-
-        winCounter++;
-        alert("You Win");
-
-        document.getElementById('winCounter').innerHTML = winCounter;
-
-        startGame();
-
-
-    } else if (numGuesses === 0) {
-        lossCounter++;
+    if (numGuesses === 0) {
+        losses++;
         alert('You lose');
 
-        document.getElementById('lossCounter').innerHTML = lossCounter;
+        document.getElementById('lossCounter').innerHTML = losses;
+
+        startGame();
+    } else if(chosenWord === blanks.join('')) {
+        wins++;
+        alert('You win');
+
+        document.getElementById('winCounter').innerHTML = wins;
+
         startGame();
     }
-
 
 }
 
